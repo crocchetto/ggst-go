@@ -10,13 +10,13 @@ go get github.com/crocchetto/ggst-go
 
 ## how it works
 
-every request and response is a MessagePack array encrypted with AES-256-GCM and sent form-encoded to the API,
-the authentication uses a short-lived Steam web-API auth ticket, which the server exchanges for a session during login
-
 the library is split:
 
 - **`ggst`** — the core client
 - **`auth`** — obtains the Steam credentials (SteamID and web-API ticket) needed for a fresh login, requires a running Steam client
+
+every request and response is a MessagePack array encrypted and sent form-encoded to the API,
+the authentication uses a Steam web-API auth ticket, which the server exchanges for a session during login
 
 ## usage
 
@@ -63,8 +63,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if rating, ok := stats.Int("CHP_RankMatchRating"); ok {
-		fmt.Println("Chipp rank-match rating:", rating)
+	if rating, ok := stats.Character(ggst.Chipp).RankRating(); ok {
+    	fmt.Println("Chipp rank-match rating:", rating)
 	}
 
 	// fetch recent replays
@@ -82,7 +82,9 @@ func main() {
 
 ### reusing a session
 
-`Login` returns a `Session` containing a token and player ID, if you cache these, you can skip a fresh login with `RestoreSession`:
+`Login` returns a `Session` containing a token and player ID,
+you can cache these and skip a fresh login with `RestoreSession`,
+though the server-side session may expire, in which case you'll need to log in again:
 
 ```go
 client := ggst.NewClient("")
