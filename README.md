@@ -1,9 +1,6 @@
 # ggst-go
 
-a Go client for the Guilty Gear Strive online API served by ArcSys at `ggst-game.guiltygear.com`
-
-the API is private and undocumented;
-this client was built by observing the game's own traffic
+the API is private and undocumented; this client was built by observing the game's own traffic
 
 ## install
 
